@@ -5,3 +5,11 @@
 - Wie werden die Daten transformiert und gespeichert: Die eingegebenen Daten werden in eine Variable gespeichert, die später verwendet wird,
   um eine Anfrage an die YouTube-API zu stellen.
 
+2-User-Story: Anzeige der aktuellen Anzahl der Abonnenten
+- Wer handelt: Endbenutzer
+- Wie wird gehandelt: Das Programm ruft die aktuelle Anzahl der Abonnenten des eingegebenen Kanals ab und zeigt sie in der GUI an.
+- Welche Daten werden benötigt: YouTube-Kanalname
+- Wie werden die Daten transformiert und gespeichert: Die YouTube-API wird verwendet, um die Anzahl der Abonnenten des eingegebenen Kanals
+  abzurufen und das Ergebnis wird in der GUI angezeigt.
+
+
