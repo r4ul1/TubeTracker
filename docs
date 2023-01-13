@@ -12,4 +12,13 @@
 - Wie werden die Daten transformiert und gespeichert: Die YouTube-API wird verwendet, um die Anzahl der Abonnenten des eingegebenen Kanals
   abzurufen und das Ergebnis wird in der GUI angezeigt.
 
+3-User-Story: Aktualisierung der Abonnentenanzahl
+- Wer handelt: Endbenutzer
+- Wie wird gehandelt: Das Programm aktualisiert automatisch die Anzahl der Abonnenten oder der Benutzer kann die Anzahl der Abonnenten manuell über
+  eine Schaltfläche aktualisieren.
+- Welche Daten werden benötigt: YouTube-Kanalname
+- Wie werden die Daten transformiert und gespeichert: Das Programm ruft regelmäßig die aktuelle Anzahl der Abonnenten ab oder der Benutzer kann
+  die Anzahl der Abonnenten manuell durch Klicken auf eine Schaltfläche aktualisieren. Die aktuelle Anzahl der Abonnenten wird in der GUI angezeigt.
+
+
 
