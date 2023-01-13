@@ -1,1 +1,7 @@
+1-User-Story: User kann YouTube-Kanalnamen eingeben
+- Wer handelt: Endbenutzer
+- Wie wird gehandelt: Der Benutzer gibt den Namen eines YouTubers in ein Eingabefeld ein, das in der GUI des Programms angezeigt wird.
+- Welche Daten werden benötigt: YouTube-Kanalname
+- Wie werden die Daten transformiert und gespeichert: Die eingegebenen Daten werden in eine Variable gespeichert, die später verwendet wird,
+  um eine Anfrage an die YouTube-API zu stellen.
 
