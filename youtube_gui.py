@@ -3,7 +3,6 @@ from PyQt5.QtCore import Qt
 from youtube_scraper import get_channel_id, get_subscriber_count
 from youtube_database import insert_channel_info, retrieve_channel_info
 import sqlite3
-import sys
 import datetime
 
 class YouTubeSubscriberCounter(QWidget):
@@ -58,9 +57,3 @@ class YouTubeSubscriberCounter(QWidget):
         subscriber_count = get_subscriber_count(channel_id)
         insert_channel_info(channel_id, name, subscriber_count)
         self.result_label.setText(f"Subscribers: {subscriber_count}\nLast updated: {datetime.datetime.now()}")
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    gui = YouTubeSubscriberCounter(sys.argv)
-    gui.show()
-    sys.exit(app.exec_())

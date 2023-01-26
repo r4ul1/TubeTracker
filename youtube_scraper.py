@@ -17,13 +17,21 @@ def get_subscriber_count(channel_id):
     response = requests.get(url, headers=headers)
     print(f"Response status code: {response.status_code}")
     soup = BeautifulSoup(response.text, "html.parser")
-    subscriber_count = soup.find("subscriber-count", {"class=":"meta-item style-scope ytd-c4-tabbed-header-renderer"})
+    subscriber_count = soup.find("span", {"class=":"meta-item style-scope ytd-c4-tabbed-header-renderer"})
     subscriber_count = soup.select("span[class*='subscriber-count']")
     if subscriber_count:
         return subscriber_count.text
     else:
-        subscriber_count = soup.find("subscriber-count", {"class=":"meta-item style-scope ytd-c4-tabbed-header-renderer"})
-        if subscriber_count:
-            return subscriber_count.text
-        else:
-            return "Could not retrieve subscriber count"
+        subscriber_count = soup.find("span", {"class=":"meta-item style-scope ytd-c4-tabbed-header-renderer"})
+    if subscriber_count:
+        return subscriber_count.text
+    else:
+        return "Could not retrieve subscriber count"
+
+def get_channel_subscriber_count(channel_name):
+    channel_id = get_channel_id(channel_name)
+    if channel_id:
+        subscriber_count = get_subscriber_count(channel_id)
+        return subscriber_count
+    else:
+        return "Could not find channel id"
