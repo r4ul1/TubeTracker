@@ -1,38 +1,75 @@
-import sys
 import tkinter as tk
-from tkinter import ttk
+import sqlite3
+import datetime
 import youtube_scraper
-import youtube_database
 
-def get_subscriber_count(entry_name):
-    name = entry_name.get()
-    channel_id = youtube_scraper.get_channel_id(name)
-    subscriber_count = youtube_scraper.get_channel_subscriber_count(name)
-    youtube_database.insert_channel_info(channel_id, name, subscriber_count)
-    display_subscriber_count(subscriber_count)
 
-def display_subscriber_count(subscriber_count):
-        global label_subscriber_count
-        label_subscriber_count.config(text="Subscriber Count: " + str(subscriber_count))
+def create_database():
+    conn = sqlite3.connect("youtube_database.db")
+    cursor = conn.cursor()
 
-def main():
-    root = tk.Tk()
-    root.title("Tube Tracker")
-    
-    label_name = ttk.Label(root, text="Enter channel name:")
-    label_name.grid(row=0, column=0, padx=10, pady=10)
+    cursor.execute("""CREATE TABLE IF NOT EXISTS youtubers (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            subscribers INTEGER,
+            timestamp TEXT)
+        """)
 
-    entry_name = ttk.Entry(root)
-    entry_name.grid(row=0, column=1, padx=10, pady=10)
+    print("Database created successfully.")
+    conn.close()
 
-    button_search = ttk.Button(root, text="Search", command=lambda: get_subscriber_count(entry_name))
-    button_search.grid(row=1, column=0, columnspan=2, padx=10, pady=10)
 
-    global label_subscriber_count
-    label_subscriber_count = ttk.Label(root, text="Subscriber Count:")
-    label_subscriber_count.grid(row=2, column=0, padx=10, pady=10)
+def add_to_database(name, subscribers):
+    conn = sqlite3.connect("youtube_database.db")
+    cursor = conn.cursor()
+    cursor.execute("CREATE TABLE IF NOT EXISTS youtubers (name text, subscribers integer, timestamp datetime DEFAULT CURRENT_TIMESTAMP)")
 
-    root.mainloop()
+    timestamp = str(datetime.datetime.now())
 
-if __name__ == '__main__':
-    sys.exit(main())
+    cursor.execute("SELECT * FROM youtubers WHERE name=?", (name,))
+    data = cursor.fetchall()
+    if len(data) == 0:
+        cursor.execute("""INSERT INTO youtubers (name, subscribers, timestamp)
+                        VALUES (?,?,?)
+                    """, (name, subscribers, timestamp))
+    else:
+        cursor.execute("""UPDATE youtubers SET subscribers=?, timestamp=? WHERE name=?
+                    """, (subscribers, timestamp, name))
+
+    conn.commit()
+    print("Data added/updated successfully.")
+    conn.close()
+
+
+def search_yt():
+    name = entry.get()
+    subscribers = youtube_scraper.get_sub_count(name)
+    add_to_database(name, subscribers)
+    result_label.config(text=f"{name} has {subscribers} subscribers.")
+
+root = tk.Tk()
+root.title("Tube Tracker")
+root.configure(bg="#333")
+
+title = tk.Label(root, text="Tube", font=("Helvetica", 20), bg="#333", fg="red")
+title.pack(pady=20, side="left")
+
+title = tk.Label(root, text="Tracker", font=("Helvetica", 20), bg="#333", fg="#fff")
+title.pack(pady=20, side="left")
+
+frame = tk.Frame(root, bg="#333")
+frame.pack()
+
+label = tk.Label(frame, text="Enter a YouTube username:", bg="#333", fg="#fff")
+label.pack()
+
+entry = tk.Entry(frame)
+entry.pack()
+
+button = tk.Button(frame, text="Search", command=search_yt)
+button.pack()
+
+result_label = tk.Label(frame, text="", bg="#333", fg="#fff")
+result_label.pack()
+
+root.mainloop()
