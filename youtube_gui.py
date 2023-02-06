@@ -1,59 +1,38 @@
-from PyQt5.QtWidgets import QApplication, QLineEdit, QPushButton, QLabel, QVBoxLayout, QHBoxLayout, QWidget
-from PyQt5.QtCore import Qt
-from youtube_scraper import get_channel_id, get_subscriber_count
-from youtube_database import insert_channel_info, retrieve_channel_info
-import sqlite3
-import datetime
+import sys
+import tkinter as tk
+from tkinter import ttk
+import youtube_scraper
+import youtube_database
 
-class YouTubeSubscriberCounter(QWidget):
+def get_subscriber_count(entry_name):
+    name = entry_name.get()
+    channel_id = youtube_scraper.get_channel_id(name)
+    subscriber_count = youtube_scraper.get_channel_subscriber_count(name)
+    youtube_database.insert_channel_info(channel_id, name, subscriber_count)
+    display_subscriber_count(subscriber_count)
 
-    def __init__(self, argv):
-        super().__init__()
-        self.app = QApplication(argv)
-        
-        self.conn = sqlite3.connect('youtube_channels.db')
-        self.c = self.conn.cursor()
-        self.c.execute('''CREATE TABLE IF NOT EXISTS channels (id INTEGER PRIMARY KEY, name TEXT, subscriber_count INTEGER, timestamp DATETIME)''')
-        
-        self.channel_name = QLineEdit()
-        self.channel_name.setPlaceholderText("Enter YouTube channel name")
-        self.channel_name.returnPressed.connect(self.search)
-        
-        self.search_button = QPushButton("Search")
-        self.search_button.clicked.connect(self.search)
-        
-        self.update_button = QPushButton("Update")
-        self.update_button.clicked.connect(self.update)
-        
-        self.result_label = QLabel("")
-        self.result_label.setAlignment(Qt.AlignCenter)
-        
-        self.search_layout = QHBoxLayout()
-        self.search_layout.addWidget(self.channel_name)
-        self.search_layout.addWidget(self.search_button)
-        self.search_layout.addWidget(self.update_button)
-        
-        self.main_layout = QVBoxLayout()
-        self.main_layout.addLayout(self.search_layout)
-        self.main_layout.addWidget(self.result_label)
-        self.setLayout(self.main_layout)
+def display_subscriber_count(subscriber_count):
+        global label_subscriber_count
+        label_subscriber_count.config(text="Subscriber Count: " + str(subscriber_count))
 
-    def search(self):
-        name = self.channel_name.text()
-        channel_info = retrieve_channel_info(name)
+def main():
+    root = tk.Tk()
+    root.title("Tube Tracker")
+    
+    label_name = ttk.Label(root, text="Enter channel name:")
+    label_name.grid(row=0, column=0, padx=10, pady=10)
 
-        if channel_info:
-            self.result_label.setText(f"Subscribers: {channel_info[1]}\nLast updated: {channel_info[2]}")
-        else:
-            channel_id = get_channel_id(name)
-            subscriber_count = get_subscriber_count(channel_id)
-            insert_channel_info(channel_id, name, subscriber_count)
-            self.result_label.setText(f"Subscribers: {subscriber_count}")
+    entry_name = ttk.Entry(root)
+    entry_name.grid(row=0, column=1, padx=10, pady=10)
 
+    button_search = ttk.Button(root, text="Search", command=lambda: get_subscriber_count(entry_name))
+    button_search.grid(row=1, column=0, columnspan=2, padx=10, pady=10)
 
-    def update(self):
-        name = self.channel_name.text()
-        channel_id = get_channel_id(name)
-        subscriber_count = get_subscriber_count(channel_id)
-        insert_channel_info(channel_id, name, subscriber_count)
-        self.result_label.setText(f"Subscribers: {subscriber_count}\nLast updated: {datetime.datetime.now()}")
+    global label_subscriber_count
+    label_subscriber_count = ttk.Label(root, text="Subscriber Count:")
+    label_subscriber_count.grid(row=2, column=0, padx=10, pady=10)
+
+    root.mainloop()
+
+if __name__ == '__main__':
+    sys.exit(main())

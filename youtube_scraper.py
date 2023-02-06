@@ -1,15 +1,25 @@
 import requests
-from bs4 import BeautifulSoup
+import json
+from bs4 import BeautifulSoup, Tag
+
 
 def get_channel_id(name):
     url = f"https://www.youtube.com/results?search_query={name}"
     response = requests.get(url)
-    soup = BeautifulSoup(response.text, "html.parser")
-    channel_link = soup.find("a", {"class": "yt-uix-tile-link"})
-    if channel_link:
-        return channel_link["href"].split("/")[-1]
-    else:
-        return None
+    soup = BeautifulSoup(response.content, features="html.parser")
+    scripts: Tag = soup.findAll("script")[33]
+    scripts = scripts.get_text().split(" = ", maxsplit=1)[1].rsplit(";", maxsplit=1)[0]
+    scripts: dict = json.loads(scripts)
+    scripts = scripts["contents"]["twoColumnSearchResultsRenderer"]["primaryContents"]["sectionListRenderer"]["contents"]
+    for c in range(len(scripts)):
+        try:
+            print(scripts[c]["itemSectionRenderer"]["contents"][0].keys())
+            scripts = scripts[c]["itemSectionRenderer"]["contents"][0]["channelRenderer"]["videoCountText"]["simpleText"]
+            print(scripts.split(" ")[0])
+            return scripts.split(" ")[0]
+        except Exception as e:
+            print(e)
+
 
 def get_subscriber_count(channel_id):
     url = f"https://www.youtube.com/channel/{channel_id}"
