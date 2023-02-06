@@ -30,13 +30,9 @@ class TestYouTubeGui(unittest.TestCase):
 
 
 class TestYouTubeScraper(unittest.TestCase):
+
     def test_get_sub_count(self):
-        scripts: dict = json.loads(scripts)
         sub_count = youtube_scraper.get_sub_count("testuser")
+        self.assertIsNotNone(sub_count)
         self.assertIsInstance(sub_count, str)
         self.assertGreaterEqual(len(sub_count), 4000)
-        return scripts.split(" ")[0]
-
-if __name__ == "main":
-    unittest.main()
-
