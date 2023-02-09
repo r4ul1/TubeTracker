@@ -1,19 +1,19 @@
 # User-Story-03:
 
 ## Title
-User searches for YouTube channel
+Update the number of subscribers for a YouTuber
 
 ## Actors
 User
 
 ## Description
-User enters a YouTube channel name and clicks the search button. The YouTube Tracker program will retrieve the channel's ID and subscriber count using web scraping and display the information in the GUI.
+The user wants to update the number of subscribers for a YouTuber that is already in the database.
 
 ## Input Data
-YouTube channel name
+The user inputs the name of the YouTuber and the program fetches the current number of subscribers.
 
 ## Output Data
-YouTube channel ID and subscriber count
+The program updates the number of subscribers for the YouTuber in the database and adds a new timestamp.
 
 ## Errors
-Invalid channel name entered, unable to retrieve channel ID or subscriber count
+If the YouTuber does not exist in the database, the program will display an error message.

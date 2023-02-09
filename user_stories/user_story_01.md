@@ -7,13 +7,13 @@ User tracks YouTube channel subscribers
 User
 
 ## Description:
-User enters the name of a YouTube channel into the YouTube-Tracker program and the program uses web scraping to retrieve the channel's ID and current subscriber count. The information is then saved to a SQL database.
+The user wants to add new YouTubers to the database, along with their current number of subscribers.
 
 ## Input Data:
-YouTube channel name
+The user inputs the name of the YouTuber and the program fetches the number of subscribers.
 
 ## Output Data:
-YouTube channel ID, subscriber count
+The program adds the YouTuber and their current number of subscribers to the database.
 
 ## Errors:
-Program is unable to find the channel name, program is unable to retrieve subscriber count
+If the YouTuber does not exist, the program will display an error message.

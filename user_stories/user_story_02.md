@@ -1,19 +1,19 @@
 # User-Story-02:
 
 ## Title:
-User views YouTube channel subscriber history
+Track the number of subscribers for a YouTuber
 
 ## Actors:
 User
 
 ## Description:
-User selects a YouTube channel from a list in the YouTube-Tracker program and the program retrieves the subscriber count history for that channel from the SQL database. The information is then displayed in a graph or chart on the program's interface.
+The user wants to track the number of subscribers for a YouTuber over time.
 
 ## Input Data:
-Selected YouTube channel
+The user inputs the name of the YouTuber and the program fetches the current number of subscribers.
 
 ## Output Data:
-Subscriber count history for selected channel
+The program displays the current number of subscribers for the YouTuber and adds it to the database with a timestamp.
 
 ## Errors:
-Program is unable to find the channel in the database, data for the channel is not available.
+If the YouTuber does not exist, the program will display an error message.
