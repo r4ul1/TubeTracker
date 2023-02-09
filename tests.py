@@ -32,7 +32,7 @@ class TestYouTubeGui(unittest.TestCase):
 class TestYouTubeScraper(unittest.TestCase):
 
     def test_get_sub_count(self):
-        sub_count = youtube_scraper.get_sub_count("testuser")
-        self.assertIsNotNone(sub_count)
-        self.assertIsInstance(sub_count, str)
-        self.assertGreaterEqual(len(sub_count), 4000)
+        sub_count = youtube_scraper.get_sub_count("R4uul")
+        self.assertIsNotNone(sub_count, "Subscriber count should not be None.")
+        self.assertIsInstance(sub_count, str, "Subscriber count should be a string.")
+        self.assertGreaterEqual(len(sub_count), 1, "Subscriber count should have at least one character.")

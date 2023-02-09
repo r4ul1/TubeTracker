@@ -14,8 +14,11 @@ def get_sub_count(name):
     for c in range(len(scripts)):
         try:
             print(scripts[c]["itemSectionRenderer"]["contents"][0].keys())
-            scripts = scripts[c]["itemSectionRenderer"]["contents"][0]["channelRenderer"]["videoCountText"]["simpleText"]
-            print(scripts.split(" ")[0])
-            return scripts.split(" ")[0]
+            subscriber_string = scripts[c]["itemSectionRenderer"]["contents"][0]["channelRenderer"]["videoCountText"]["simpleText"]
+            number, unit = subscriber_string.split(" ")
+            if unit == "Mio.":
+                number = int(float(number) * 1000000)
+                print(number)
+            return number
         except Exception as e:
             print(e)
