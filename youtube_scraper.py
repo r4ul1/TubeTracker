@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup, Tag
 
 # The function retrieves the number of subscribers of a YouTube channel by searching for the channel's name on YouTube's search page.
 def get_sub_count(name):
-    url = f"https://www.youtube.com/results?search_query={name}"
+    url = f"https://www.youtube.com/results?search_query={name}&sp=EgIQAg%253D%253D"
 # It uses the requests library to make a GET request to the search page and BeautifulSoup to parse the HTML content.
     response = requests.get(url)
     soup = BeautifulSoup(response.content, features="html.parser")
