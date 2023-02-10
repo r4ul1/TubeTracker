@@ -29,3 +29,18 @@ def get_sub_count(name):
             return number
         except Exception as e:
             print(e)
+
+
+def get_most_recent_video_views(name):
+    url = f"https://www.youtube.com/results?search_query={name}sp=EgIQAQ%253D%253D"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, features="html.parser")
+    scripts: Tag = soup.findAll("script")[33]
+    scripts = scripts.get_text().split(" = ", maxsplit=1)[1].rsplit(";", maxsplit=1)[0]
+    scripts: dict = json.loads(scripts)
+    scripts = scripts["contents"]["twoColumnSearchResultsRenderer"]["primaryContents"]["sectionListRenderer"]["contents"]
+
+    video = scripts[0]["itemSectionRenderer"]["contents"][0]["videoRenderer"]
+    title = video["title"]["runs"][0]["text"]
+    views = video["viewCountText"]["simpleText"]
+    return (title, views)
